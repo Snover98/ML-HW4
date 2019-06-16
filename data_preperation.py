@@ -39,7 +39,7 @@ def prepare_data():
                          "Weighted_education_rank", "Number_of_valued_Kneset_members"]
     features = [feat for feat in features if feat.startswith("Issue")] + selected_features
 
-    scaler = DFScaler(train, features)
+    scaler = DFScaler(train, selected_features)
 
     train = scaler.scale(train)
     valid = scaler.scale(valid)
