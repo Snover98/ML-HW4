@@ -67,14 +67,15 @@ def is_coalition_ready(features: pd.DataFrame, labels: pd.Series, groups, next_g
         return False
 
     cur_col = get_coalition(labels, groups)
-
-    if cur_col is None:
-        return False
-
-    cur_score = davies_bouldin_score(features, labels.isin(cur_col).astype(np.int).values)
-
     next_col = get_coalition(labels, next_groups)
-    next_score = davies_bouldin_score(features, labels.isin(next_col).astype(np.int).values)
+
+    if cur_col is None or next_col is None:
+        return False
+    elif len(set(next_col).difference(labels.unique())) == 0:
+        return True
+
+    cur_score = davies_bouldin_score(features, labels.isin(cur_col).astype(np.int))
+    next_score = davies_bouldin_score(features, labels.isin(next_col).astype(np.int))
 
     return cur_score >= next_score
 

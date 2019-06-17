@@ -7,13 +7,11 @@ import matplotlib.pyplot as plt
 from itertools import cycle, islice
 import matplotlib.colors as mcolors
 from sklearn.cluster import MiniBatchKMeans
-from sklearn.mixture import BayesianGaussianMixture, GaussianMixture
-from sklearn.metrics import balanced_accuracy_score, accuracy_score
+from sklearn.mixture import BayesianGaussianMixture
 
 
 def create_cluster_coalitions(models: list, data: pd.DataFrame, threshold: float = 0.3):
     coalitions = []
-    print('creating coalitions')
     for model in models:
         probs = model.predict_proba(data)
         probs[probs < threshold] = 0
@@ -65,9 +63,12 @@ def learn_clusters(features: pd.DataFrame, labels: pd.Series, clustering_methods
     return clustering_classifiers
 
 
-def show_clusters(features: pd.DataFrame, labels: pd.Series, clustering_clf):
+def show_clusters(features: pd.DataFrame, clustering_clf):
     y_pred = pd.Series(clustering_clf.predict(features)).astype('category').cat.codes
+    show_labels(features, y_pred)
 
+
+def show_labels(features: pd.DataFrame, y_pred: pd.Series):
     prop_cycle = plt.rcParams['axes.prop_cycle']
     colors = np.append(prop_cycle.by_key()['color'], [])
 
