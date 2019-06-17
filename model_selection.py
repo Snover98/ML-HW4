@@ -102,7 +102,7 @@ def target_features_split(df: pd.DataFrame, target: str):
     :param target: the target label
     :return: 2 dataframes, the first with only the features, the second with only the labels
     """
-    features = list(set(df.columns.to_numpy().tolist()).difference({target}))
+    features = list(set(df.columns.values.tolist()).difference({target}))
     return df[features], df[target]
 
 

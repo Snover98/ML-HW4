@@ -19,9 +19,9 @@ def prepare_data():
     # splitting the data
     train, valid, test = loading.split_data(df, 'Vote')
 
-    train.to_csv('orig_train.csv', index=False)
-    valid.to_csv('orig_valid.csv', index=False)
-    test.to_csv('orig_test.csv', index=False)
+    #train.to_csv('orig_train.csv', index=False)
+    #valid.to_csv('orig_valid.csv', index=False)
+    #test.to_csv('orig_test.csv', index=False)
 
     # cleansing the data
     train = pd.DataFrame(cleansing.cleanse(train))
@@ -33,12 +33,15 @@ def prepare_data():
     imputation(valid, train)
     imputation(test, train)
 
+    train.to_csv('full_train.csv', index=False)
+    test.to_csv('full_test.csv', index=False)
+
     features: List[str] = train.columns.to_numpy().tolist()
     selected_features = ["Avg_environmental_importance", "Avg_government_satisfaction", "Avg_education_importance",
                          "Avg_monthly_expense_on_pets_or_plants", "Avg_Residancy_Altitude", "Yearly_ExpensesK",
                          "Weighted_education_rank", "Number_of_valued_Kneset_members"]
     features = [feat for feat in features if feat.startswith("Issue")] + selected_features
-
+    """
     scaler = DFScaler(train, selected_features)
 
     train = scaler.scale(train)
@@ -47,7 +50,7 @@ def prepare_data():
 
     train[features + ['Vote']].to_csv('train_processed.csv', index=False)
     valid[features + ['Vote']].to_csv('valid_processed.csv', index=False)
-    test[features + ['Vote']].to_csv('test_processed.csv', index=False)
+    test[features + ['Vote']].to_csv('test_processed.csv', index=False)"""
 
     return train[features + ['Vote']], valid[features + ['Vote']], test[features + ['Vote']]
 
