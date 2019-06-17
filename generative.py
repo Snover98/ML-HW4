@@ -96,7 +96,7 @@ def create_gen_coalition(gen_model, labels: pd.Series):
             coalition = group
             break
 
-    return labels.isin(coalition)
+    return labels.isin(coalition).astype(np.int)
 
 
 def unite_parties(labels: pd.Series, js_matrice: np.ndarray, groups):

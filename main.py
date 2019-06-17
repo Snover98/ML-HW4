@@ -6,7 +6,7 @@ import clustering
 
 
 def main():
-    data = pd.read_csv("train_processed")
+    data = pd.read_csv("train_processed.csv")
     X, Y = generative.target_features_split(data, "Vote")
 
     # cluster models
@@ -15,7 +15,7 @@ def main():
 
     # generative_models
     gen_models = generative.train_generative(data)
-    gen_coalitions = generative.create_gen_coalitions(gen_models)
+    gen_coalitions = generative.create_gen_coalitions(gen_models, Y)
 
     # check how good the coalitions are
     scores = []
