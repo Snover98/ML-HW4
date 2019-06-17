@@ -17,7 +17,7 @@ def create_cluster_coalitions(models: list, data: pd.DataFrame, threshold: float
     for model in models:
         probs = model.predict_proba(data)
         probs[probs < threshold] = 0
-        con_mat = np.matmul(probs, np.transpose(probs))
+        con_mat = probs @ probs.transpose()
         col = sk.cluster.AgglomerativeClustering(n_clusters=2, connectivity=con_mat).fit_predict(data)
         coalitions.append(col)
     return coalitions
@@ -54,21 +54,13 @@ def learn_clusters(features: pd.DataFrame, labels: pd.Series, clustering_methods
     }
 
     for method in clustering_methods:
-        print('!')
         clf = RandomForestClassifier(n_jobs=-1)
         clf.set_params(**params)
 
         clusters = cluster_parties(features, labels, method)
 
-        unique_clusters = np.unique(clusters)
-        print(f'clusters are {unique_clusters}, len={len(unique_clusters)}')
-
-        print('fitting forest')
         clf.fit(features, clusters)
-        pred = clf.predict(features)
-        print(f'RandomForest has a balanced accuracy of {balanced_accuracy_score(clusters, pred)} on the clusters')
         clustering_classifiers.append(clf)
-        print('')
 
     return clustering_classifiers
 
@@ -83,19 +75,8 @@ def show_clusters(features: pd.DataFrame, labels: pd.Series, clustering_clf):
         added_colors = np.random.choice(list(mcolors.XKCD_COLORS.values()), size=len(y_pred.unique()) - len(colors))
         colors = np.append(colors, added_colors)
 
-    # colors = np.array(list(islice(cycle(['#377eb8', '#ff7f00', '#4daf4a',
-    #                                      '#f781bf', '#a65628', '#984ea3',
-    #                                      '#999999', '#e41a1c', '#dede00']),
-    #                               int(max(y_pred) + 1))))
-
-    # add black color for outliers (if any)
-    # colors = np.append(colors, ["#000000"])
-
     pca = PCA(n_components=2, svd_solver='randomized')
     X = pca.fit(features).transform(features)
-
-    # lda = LinearDiscriminantAnalysis(n_components=2)
-    # X = lda.fit_transform(features, labels)
 
     plt.title('Clusters at the PCA axis for 2-dim')
     plt.scatter(X[:, 0], X[:, 1], s=10, color=colors[y_pred.values])

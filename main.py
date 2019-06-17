@@ -15,7 +15,7 @@ def main():
 
     # generative_models
     gen_models = generative.train_generative(data)
-    gen_coalitions = generative.create_gen_coalitions(gen_models, Y)
+    gen_coalitions = generative.create_gen_coalitions(gen_models, X, Y)
 
     # check how good the coalitions are
     scores = []

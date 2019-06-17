@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from model_selection import target_features_split
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
+from sklearn.metrics import davies_bouldin_score
 
 
 # Distribution = namedtuple('Distribution',)
@@ -32,7 +33,7 @@ def train_generative(data: pd.DataFrame):
 #     return log_p - log_q
 
 
-def jensen_shannon(classifier, p_idx, q_idx, size=1024, is_lda=False):
+def jensen_shannon(classifier, p_idx, q_idx, size=4096, is_lda=False):
     if is_lda:
         p_mean = classifier.means_[p_idx]
         p_cov = classifier.covariance_
@@ -61,17 +62,34 @@ def jensen_shannon(classifier, p_idx, q_idx, size=1024, is_lda=False):
     return (log_p_true.mean() - (log_mix_p.mean() - np.log(2)) + log_q_true.mean() - (log_mix_q.mean() - np.log(2))) / 2
 
 
-def is_coalition_ready(labels: pd.Series, groups):
+def is_coalition_ready(features: pd.DataFrame, labels: pd.Series, groups, next_groups):
+    if next_groups is None or groups is None:
+        return False
+
+    cur_col = get_coalition(labels, groups)
+
+    if cur_col is None:
+        return False
+
+    cur_score = davies_bouldin_score(features, labels.isin(cur_col).astype(np.int).values)
+
+    next_col = get_coalition(labels, next_groups)
+    next_score = davies_bouldin_score(features, labels.isin(next_col).astype(np.int).values)
+
+    return cur_score >= next_score
+
+
+def get_coalition(labels: pd.Series, groups):
     num_voters = labels.to_numpy().shape[0]
 
     for group in groups:
         if labels[labels.isin(group)].to_numpy().shape[0] > num_voters / 2.0:
-            return True
+            return group
 
-    return False
+    return None
 
 
-def create_gen_coalition(gen_model, labels: pd.Series):
+def create_gen_coalition(gen_model, features: pd.DataFrame, labels: pd.Series):
     n_labels = len(labels.unique())
 
     js_matrice = np.zeros((n_labels, n_labels))
@@ -83,18 +101,13 @@ def create_gen_coalition(gen_model, labels: pd.Series):
             js_matrice[idx_1, idx_2] = jensen_shannon(gen_model, idx_1, idx_2, is_lda=is_lda)
             js_matrice[idx_2, idx_1] = js_matrice[idx_1, idx_2]
 
-    groups = [[label] for label in labels.unique()]
-    print(groups)
+    next_groups = [[label] for label in labels.unique()]
+    groups = None
+    while not is_coalition_ready(features, labels, groups, next_groups):
+        groups = next_groups
+        next_groups = unite_parties(labels, js_matrice, groups)
 
-    while not is_coalition_ready(labels, groups):
-        groups = unite_parties(labels, js_matrice, groups)
-        print(groups)
-
-    coalition = None
-    for group in groups:
-        if is_coalition_ready(labels, [group]):
-            coalition = group
-            break
+    coalition = get_coalition(labels, groups)
 
     return labels.isin(coalition).astype(np.int)
 
@@ -108,12 +121,8 @@ def unite_parties(labels: pd.Series, js_matrice: np.ndarray, groups):
         group_indices = [parties.index(party) for party in group]
         dists[group_idx, group_idx] = np.inf
         for other_group_idx in range(group_idx):
-            # print('!')
             other_group_indices = [parties.index(party) for party in groups[other_group_idx]]
-            # print(js_matrice.shape)
-            # print(group_indices, other_group_indices)
-            # print(js_matrice[group_indices, other_group_indices])
-            dists[group_idx, other_group_idx] = np.max(js_matrice[group_indices, :][:, other_group_indices], axis=None)
+            dists[group_idx, other_group_idx] = np.mean(js_matrice[group_indices, :][:, other_group_indices], axis=None)
             dists[other_group_idx, group_idx] = dists[group_idx, other_group_idx]
 
     merge_idx1, merge_idx2 = np.unravel_index(dists.argmin(), dists.shape)
@@ -122,5 +131,5 @@ def unite_parties(labels: pd.Series, js_matrice: np.ndarray, groups):
     return [groups[idx] for idx in range(len(groups)) if idx != merge_idx1 and idx != merge_idx2] + [merged]
 
 
-def create_gen_coalitions(gen_models, labels: pd.Series):
-    return [create_gen_coalition(model, labels) for model in gen_models]
+def create_gen_coalitions(gen_models, features: pd.DataFrame, labels: pd.Series):
+    return [create_gen_coalition(model, features, labels) for model in gen_models]
