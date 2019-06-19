@@ -7,35 +7,20 @@ from wrappers import *
 from model_selection import target_features_split
 from sklearn.svm import SVC
 import pickle
+from sklearn.ensemble import RandomForestClassifier
+import clustering
+from sklearn.mixture import BayesianGaussianMixture
+from sklearn.metrics import davies_bouldin_score, completeness_score
 
 
-def check_interval(scaler: DFScaler, changed_data: pd.DataFrame, low: int, high: int, model, feature: str,
-                   hist_true: pd.Series, num_iters=50):
-    print('===============================================')
-    print(f'interval is [{low}, {high})')
-    hists = pd.Series(np.zeros_like(hist_true.values), index=hist_true.index)
-    for idx in range(num_iters):
-        changed_data[feature] = pd.Series(np.random.randint(low, high, size=len(changed_data)),
-                                          index=changed_data.index).astype(np.float)
-
-        scaled_changed_data = scaler.scale(changed_data)
-        scaled_changed_X, _ = target_features_split(scaled_changed_data, "Vote")
-
-        hists += model.predict(scaled_changed_X)
-        if idx % 10 == 0:
-            print('!', end='')
-        else:
-            print('.', end='')
-
-    print('!')
-
-    hist = hists / num_iters
-
-    parties = hist.index
-    print(hist_true[parties] * 100)
-    print(hist[parties] * 100)
-    print((hist[parties] - hist_true[parties]) * 100)
-    print('')
+def show_col_parties(coalition: pd.Series, labels: pd.Series):
+    col_number = coalition.value_counts().idxmax()
+    print('The coalition voters are:')
+    print(labels[coalition == col_number].value_counts().sort_index())
+    print('Out of:')
+    print(labels.value_counts().sort_index())
+    print(f'The coalition parties are {labels[coalition == col_number].unique()}')
+    print(f'The Coalition has {100 * len(labels[coalition == col_number]) / len(coalition)}% of the votes')
 
 
 def main():
@@ -62,24 +47,39 @@ def main():
     test = scaler.scale(test)
 
     X, Y = target_features_split(data, "Vote")
-    hist_true = Y.value_counts().astype(float) / len(Y.index)
+
+    params = {
+        'bootstrap': False,
+        'class_weight': 'balanced',
+        'criterion': 'gini',
+        'max_depth': 20,
+        'max_features': 'log2',
+        'min_samples_leaf': 4,
+        'min_samples_split': 10,
+        'n_estimators': 1738,
+        'warm_start': False
+    }
+    model = RandomForestClassifier(n_jobs=-1)
+    model.set_params(**params)
 
     if not fitted:
-        model = ElectionsResultsWrapper(
-            SVC(C=7.70625, class_weight='balanced', degree=5, gamma='auto', kernel='poly', probability=True,
-                tol=0.33618))
         model.fit(X, Y)
         pickle.dump(model, open('fit_model.sav', 'wb'))
     else:
         model = pickle.load(open('fit_model.sav', 'rb'))
 
-    feature = "Yearly_ExpensesK"
+    # change the data
+    changed_data["Avg_environmental_importance"] = changed_data["Avg_environmental_importance"] * 0.8
+    changed_data = scaler.scale(changed_data)
+    changed_x, _ = target_features_split(changed_data, "Vote")
 
-    intervals = [3000, 4000, 5000, 6000, 7000, 8000, 9000, 10001]
-
-    print(f'feature is {feature}')
-    for low, high in zip(intervals[:-1], intervals[1:]):
-        check_interval(scaler, changed_data, low, high, model, feature, hist_true)
+    y_changed_pred = pd.Series(model.predict(changed_x))
+    n_clusters = 3
+    clustering_methods = [BayesianGaussianMixture(n_components=n_clusters)]
+    cluster_models = clustering.learn_clusters(changed_x, y_changed_pred, clustering_methods)
+    cluster_coalitions = clustering.create_cluster_coalitions(cluster_models, changed_x , threshold=0.1)
+    davies_bouldin_score(changed_x, cluster_coalitions[0])
+    show_col_parties(pd.Series(cluster_coalitions[0]), y_changed_pred)
 
 
 if __name__ == "__main__":
