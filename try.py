@@ -8,7 +8,37 @@ from model_selection import target_features_split
 from sklearn.svm import SVC
 import pickle
 
-if __name__ == "__main__":
+
+def check_interval(scaler: DFScaler, changed_data: pd.DataFrame, low: int, high: int, model, feature: str,
+                   hist_true: pd.Series, num_iters=50):
+    print('===============================================')
+    print(f'interval is [{low}, {high})')
+    hists = pd.Series(np.zeros_like(hist_true.values), index=hist_true.index)
+    for idx in range(num_iters):
+        changed_data[feature] = pd.Series(np.random.randint(low, high, size=len(changed_data)),
+                                          index=changed_data.index).astype(np.float)
+
+        scaled_changed_data = scaler.scale(changed_data)
+        scaled_changed_X, _ = target_features_split(scaled_changed_data, "Vote")
+
+        hists += model.predict(scaled_changed_X)
+        if idx % 10 == 0:
+            print('!', end='')
+        else:
+            print('.', end='')
+
+    print('!')
+
+    hist = hists / num_iters
+
+    parties = hist.index
+    print(hist_true[parties] * 100)
+    print(hist[parties] * 100)
+    print((hist[parties] - hist_true[parties]) * 100)
+    print('')
+
+
+def main():
     fitted = True
     data = pd.read_csv("full_train.csv")
     test = pd.read_csv("full_test.csv")
@@ -19,7 +49,8 @@ if __name__ == "__main__":
     selected_features = ["Avg_environmental_importance", "Avg_government_satisfaction", "Avg_education_importance",
                          "Avg_monthly_expense_on_pets_or_plants", "Avg_Residancy_Altitude", "Yearly_ExpensesK",
                          "Weighted_education_rank", "Number_of_valued_Kneset_members"]
-    features = [feat for feat in features if feat.startswith("Issue")] + selected_features + ["Vote"]
+    issues = [feat for feat in features if feat.startswith("Issue")]
+    features = issues + selected_features + ["Vote"]
 
     data = data[features]
     test = test[features]
@@ -33,7 +64,6 @@ if __name__ == "__main__":
     X, Y = target_features_split(data, "Vote")
     hist_true = Y.value_counts().astype(float) / len(Y.index)
 
-
     if not fitted:
         model = ElectionsResultsWrapper(
             SVC(C=7.70625, class_weight='balanced', degree=5, gamma='auto', kernel='poly', probability=True,
@@ -43,14 +73,14 @@ if __name__ == "__main__":
     else:
         model = pickle.load(open('fit_model.sav', 'rb'))
 
+    feature = "Avg_education_importance"
+
+    intervals = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1001]
+
+    print(f'feature is {feature}')
+    for low, high in zip(intervals[:-1], intervals[1:]):
+        check_interval(scaler, changed_data, low, high, model, feature, hist_true)
 
 
-    feature = "Avg_Residancy_Altitude"
-    values = np.random.randint(12, high=14, size=len(Y))
-    changed_data[feature] = values.astype(np.float)
-
-    scaled_changed_data = scaler.scale(changed_data.copy())
-    scaled_changed_X, _ = target_features_split(scaled_changed_data, "Vote")
-
-    hist = model.predict(scaled_changed_X)
-    print(hist - hist_true)
+if __name__ == "__main__":
+    main()

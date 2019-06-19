@@ -8,6 +8,7 @@ from itertools import cycle, islice
 import matplotlib.colors as mcolors
 from sklearn.cluster import MiniBatchKMeans
 from sklearn.mixture import BayesianGaussianMixture
+from mpl_toolkits.mplot3d import Axes3D
 
 
 def create_cluster_coalitions(models: list, data: pd.DataFrame, threshold: float = 0.3):
@@ -63,12 +64,12 @@ def learn_clusters(features: pd.DataFrame, labels: pd.Series, clustering_methods
     return clustering_classifiers
 
 
-def show_clusters(features: pd.DataFrame, clustering_clf):
+def show_clusters(features: pd.DataFrame, clustering_clf, title: str):
     y_pred = pd.Series(clustering_clf.predict(features)).astype('category').cat.codes
-    show_labels(features, y_pred)
+    show_labels(features, y_pred, title)
 
 
-def show_labels(features: pd.DataFrame, y_pred: pd.Series):
+def show_labels(features: pd.DataFrame, y_pred: pd.Series, title: str):
     prop_cycle = plt.rcParams['axes.prop_cycle']
     colors = np.append(prop_cycle.by_key()['color'], [])
 
@@ -76,11 +77,14 @@ def show_labels(features: pd.DataFrame, y_pred: pd.Series):
         added_colors = np.random.choice(list(mcolors.XKCD_COLORS.values()), size=len(y_pred.unique()) - len(colors))
         colors = np.append(colors, added_colors)
 
-    pca = PCA(n_components=2, svd_solver='randomized')
+    pca = PCA(n_components=3, svd_solver='randomized')
     X = pca.fit(features).transform(features)
 
-    plt.title('Clusters at the PCA axis for 2-dim')
-    plt.scatter(X[:, 0], X[:, 1], s=10, color=colors[y_pred.values])
+    fig = plt.figure()
+    ax = Axes3D(fig)
+
+    ax.set_title(title)
+    ax.scatter(X[:, 0], X[:, 1], X[:, 2], s=10, color=colors[y_pred.values])
 
     plt.xlim(-5, 5)
     plt.ylim(-5, 5)

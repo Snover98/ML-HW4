@@ -3,6 +3,17 @@ import sklearn
 import pandas as pd
 import numpy as np
 import clustering
+from sklearn.metrics import davies_bouldin_score, completeness_score
+
+
+def show_col_parties(coalition: pd.Series, labels: pd.Series):
+    col_number = coalition.value_counts().idxmax()
+    print('The coalition voters are:')
+    print(labels[coalition == col_number].value_counts().sort_index())
+    print('Out of:')
+    print(labels.value_counts().sort_index())
+    print(f'The coalition parties are {labels[coalition == col_number].unique()}')
+    print(f'The Coalition has {100 * len(labels[coalition == col_number]) / len(coalition)}% of the votes')
 
 
 def main():
@@ -12,24 +23,28 @@ def main():
     # cluster models
     print('Doing clustering coalitions')
     cluster_models = clustering.get_clustering(X, Y)
-    cluster_coalitions = clustering.create_cluster_coalitions(cluster_models, X, threshold=0.3)
+    cluster_coalitions = clustering.create_cluster_coalitions(cluster_models, X, threshold=0.5)
 
     # generative_models
     print('Doing generative coalitions')
     gen_models = generative.train_generative(data)
     gen_coalitions = generative.create_gen_coalitions(gen_models, X, Y)
 
-    for model in cluster_models + gen_models:
-        clustering.show_clusters(X, model)
+    model_names = ['MiniBatchKMeans', 'BayesianGMM', 'LDA', 'QDA']
+    for model, name in zip(cluster_models + gen_models, model_names):
+        clustering.show_clusters(X, model, f'{name} Clusters In 3D PCA Values')
 
     # check how good the coalitions are
     scores = []
-    for coalition in cluster_coalitions + gen_coalitions:
-        scores.append(sklearn.metrics.davies_bouldin_score(X, coalition))
+    for coalition, name in zip(cluster_coalitions + gen_coalitions, model_names):
+        scores.append(davies_bouldin_score(X, coalition))
         print('')
         print('=========================================')
+        print(f'{name} Coalition')
         print(f'Score is {scores[-1]}')
-        clustering.show_labels(X, pd.Series(coalition))
+        print(f'Completeness is {completeness_score(Y, coalition)}')
+        show_col_parties(pd.Series(coalition), Y)
+        clustering.show_labels(X, pd.Series(coalition), f'{name} Coalition')
 
 
 if __name__ == '__main__':
