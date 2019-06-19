@@ -73,9 +73,9 @@ def main():
     else:
         model = pickle.load(open('fit_model.sav', 'rb'))
 
-    feature = "Avg_education_importance"
+    feature = "Yearly_ExpensesK"
 
-    intervals = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1001]
+    intervals = [3000, 4000, 5000, 6000, 7000, 8000, 9000, 10001]
 
     print(f'feature is {feature}')
     for low, high in zip(intervals[:-1], intervals[1:]):

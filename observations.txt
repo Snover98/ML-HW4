@@ -1,0 +1,115 @@
+Avg_environmental_importance
+	0-99: BIG Browns victory
+	100-199: BIG Browns victory
+	200-299: BIG Browns victory
+	300-399: BIG Browns victory
+	400-499: Browns 46%, Violets 25%
+	500-599: Violets 53%
+	600-699: BIG Violets victory
+	700-799: Violets 51%, Khakis 46%
+	800-899: Khakis 98%!
+	900-1000: Khakis 99%!
+	Conclusion: Browns (0-400), Violets (400-800), Khakis (800-1000)
+
+
+Avg_government_satisfaction
+	0-99: BIG Whites victory (98%)
+	100-199: BIG Whites victory (99%)
+	200-299: BIG Whites victory (93%)
+	300-399: Whites 73%, Browns 26%
+	400-499: Whites 49%, Browns 43%
+	500-599: Browns 55%, Whites 10%, Pinks 23%
+	600-699: Browns 43%, Pinks 52%
+	700-799: Pinks 98%
+	800-899: Pinks 99%
+	900-1000: Oranges 80%
+	Conclusion: Whites (0-400), Browns (400-600), pinks(700-900), Oranges(?) (900-1000)
+
+
+Avg_education_importance (?)
+	0-99: Greens 66%, Reds 20%
+	100-199: Greens 70%, Reds 20%
+	200-299: Greens 71%, Reds 17%
+	300-399: Greens 74%, Reds 15%
+	400-499: Greens 80%, Reds 10%
+	500-599: Greens 94%
+	600-699: Greens 99%
+	700-799: Greens 99%
+	800-899: Greens 99%
+	900-1000: Greens 99%
+	Conclusion: higher means greens win (?)
+
+
+Avg_monthly_expense_on_pets_or_plants
+	0-99: Whites 50%, Greys 18%, Purples 18%
+	100-199: Whites 61%, Greys 17%, Purples 17%
+	200-299: Whites 52%, Purples 36%
+	300-399: Purples 86%, Whites 13%
+	400-499: Purples 97%
+	500-599: Purples 95%
+	600-699: Purples 92%
+	700-770:  Purples 90%
+	Conclusion: Whites (0-300), Purples (300-770)
+	
+	
+Yearly_ExpensesK
+	3000-4000: Browns 89%, Purples 18%
+	4000-5000: Browns 81%, Purples 17%
+	5000-6000: Browns 81%, Purples 17%
+	6000-7000: Browns 81%, Purples 17%
+	7000-8000: Browns 81%, Purples 17%
+	8000-9000:
+	9000-10000:
+	Conclusion:
+	
+	
+Number_of_valued_Kneset_members
+	0-2:
+	3-5:
+	5-8:
+	9-11:
+	11-13:
+	14-16:
+	17-20: 
+	Conclusion:
+
+
+Weighted_education_rank (should be float)
+	14-100:
+	100-186:
+	186-272:
+	272-358:
+	358-444:
+	444-530:
+	530-616:
+	616-702:
+	702-788:
+	788-866:
+	Conclusion:
+	
+Avg_Residancy_Altitude (should be float)
+	0-2:
+	2-4:
+	4-6:
+	8-10:
+	10-12:
+	12-13:
+	Conclusion:
+
+	
+Most_Important_Issue
+	Issue_Education: Purples +15%, Khakis -12%
+	Issue_Environment: Purples +13%, Khakis -11%
+	Issue_Financial: Purples +16%, Khakis -12%
+	Issue_Foreign_Affairs: Purples +11%, Khakis -10%
+	Issue_Healthcare: Purples +8%, Khakis -16%, Reds +7%
+	Issue_Military: Purples +7%, Khakis -10%
+	Issue_Social: Khakis -14%, Greens +8.7%, Reds +7.7%
+	Issue_Other: Khakis -10, Yellows +10%
+	Conclusion: Other and Soical are interesting
+	
+	
+	
+	
+	
+	
