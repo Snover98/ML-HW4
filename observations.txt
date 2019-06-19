@@ -1,18 +1,18 @@
 Avg_environmental_importance
-	0-99: BIG Browns victory
-	100-199: BIG Browns victory
-	200-299: BIG Browns victory
-	300-399: BIG Browns victory
-	400-499: Browns 46%, Violets 25%
-	500-599: Violets 53%
-	600-699: BIG Violets victory
-	700-799: Violets 51%, Khakis 46%
-	800-899: Khakis 98%!
-	900-1000: Khakis 99%!
-	Conclusion: Browns (0-400), Violets (400-800), Khakis (800-1000)
+	0-99: Purples 38%, Greys 14%, Yellows 10%
+	100-199: Purples 42%
+	200-299: Purples 45%, Yellows 10%
+	300-399: Purples 45%
+	400-499: Purples 43%
+	500-599: Purples 40%
+	600-699: Purples 36%
+	700-799: Purples 32%, Khakis 11%
+	800-899: Purples 27%, Khakis 13%, Oranges 10%, Greens 10%
+	900-1000: Purples 22%, Khakis 17%
+	Conclusion: 
 
 
-Avg_government_satisfaction
+Avg_government_satisfaction (?)
 	0-99: BIG Whites victory (98%)
 	100-199: BIG Whites victory (99%)
 	200-299: BIG Whites victory (93%)
@@ -40,7 +40,7 @@ Avg_education_importance (?)
 	Conclusion: higher means greens win (?)
 
 
-Avg_monthly_expense_on_pets_or_plants
+Avg_monthly_expense_on_pets_or_plants (?)
 	0-99: Whites 50%, Greys 18%, Purples 18%
 	100-199: Whites 61%, Greys 17%, Purples 17%
 	200-299: Whites 52%, Purples 36%
@@ -70,7 +70,7 @@ Number_of_valued_Kneset_members
 	9-11: Purples 43%
 	12-14: Purples 39%, Oranges 10%
 	15-17: Purples 29%, Greens 12%, Oranges 11%, Violets 11%
-	Conclusion: Whites - low, Purples - highe
+	Conclusion: Whites - low, Purples - high
 
 
 Weighted_education_rank (should be float)
