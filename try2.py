@@ -85,11 +85,12 @@ def main():
     y_changed_pred = pd.Series(model.predict(changed_x))
     clustering_methods = [BayesianGaussianMixture(n_components=3)]
     cluster_models = clustering.learn_clusters(changed_x, y_changed_pred, clustering_methods)
-    cluster_coalitions = clustering.create_cluster_coalitions(cluster_models, changed_x, threshold=0.1)
+    cluster_coalitions = clustering.create_cluster_coalitions(cluster_models, changed_x, y_changed_pred, threshold=0.1)
 
-    show_col_parties(pd.Series(cluster_coalitions[0]), y_changed_pred)
-    print("ddddddd: ", davies_bouldin_score(changed_x, cluster_coalitions[0]))
-    print("ccccccc: ", completeness_score(Y, cluster_coalitions[0]))
+    col = pd.Series(Y.isin(cluster_coalitions[0]))
+    show_col_parties(col.astype(np.int), y_changed_pred)
+    print("ddddddd: ", davies_bouldin_score(changed_x, col))
+    print("ccccccc: ", completeness_score(Y, col))
 
 
 if __name__ == "__main__":
