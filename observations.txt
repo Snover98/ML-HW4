@@ -53,25 +53,24 @@ Avg_monthly_expense_on_pets_or_plants
 	
 	
 Yearly_ExpensesK
-	3000-4000: Browns 89%, Purples 18%
-	4000-5000: Browns 81%, Purples 17%
-	5000-6000: Browns 81%, Purples 17%
-	6000-7000: Browns 81%, Purples 17%
-	7000-8000: Browns 81%, Purples 17%
-	8000-9000:
-	9000-10000:
-	Conclusion:
+	3000-4000: Browns 20%, Oranges 19%
+	4000-5000: Purples 20%, Oranges 14%, Khakis 13%
+	5000-6000: Purples 32%, Khakis 12%
+	6000-7000: Purples 40%, Khakis 12%
+	7000-8000: Purples 45%, Khakis 13%
+	8000-9000: Purples 47%, Khakis 13%
+	9000-10000: Purples 45%, Khakis 16%
+	Conclusion: Browns - low, Purples -mid to high
 	
 	
 Number_of_valued_Kneset_members
-	0-2:
-	3-5:
-	5-8:
-	9-11:
-	11-13:
-	14-16:
-	17-20: 
-	Conclusion:
+	0-2: Whites 44%, Greys 18%
+	3-5: Whites 27%, Purples 22%, Reds 17%
+	6-8: Purples 42%, Reds 15%
+	9-11: Purples 43%
+	12-14: Purples 39%, Oranges 10%
+	15-17: Purples 29%, Greens 12%, Oranges 11%, Violets 11%
+	Conclusion: Whites - low, Purples - highe
 
 
 Weighted_education_rank (should be float)
