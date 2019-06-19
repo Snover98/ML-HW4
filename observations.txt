@@ -9,47 +9,47 @@ Avg_environmental_importance
 	700-799: Purples 32%, Khakis 11%
 	800-899: Purples 27%, Khakis 13%, Oranges 10%, Greens 10%
 	900-1000: Purples 22%, Khakis 17%
-	Conclusion: 
+	Conclusion: Purples -> Khakis
 
 
-Avg_government_satisfaction (?)
-	0-99: BIG Whites victory (98%)
-	100-199: BIG Whites victory (99%)
-	200-299: BIG Whites victory (93%)
-	300-399: Whites 73%, Browns 26%
-	400-499: Whites 49%, Browns 43%
-	500-599: Browns 55%, Whites 10%, Pinks 23%
-	600-699: Browns 43%, Pinks 52%
-	700-799: Pinks 98%
-	800-899: Pinks 99%
-	900-1000: Oranges 80%
-	Conclusion: Whites (0-400), Browns (400-600), pinks(700-900), Oranges(?) (900-1000)
+Avg_government_satisfaction 
+	0-99: Purples 30%, Pinks 25%, Greens 23%
+	100-199: Purples 38%, Pinks 16%, Greens 20%
+	200-299: Purples 44%, Greens 16%
+	300-399: Purples 44%, Greens 12%
+	400-499: Purples 40% Yellows 10%
+	500-599: Purples 32%, Yellows 14%
+	600-699: Purples 22%, Yellows 17%, Khakis 14%, Oranges 10%
+	700-799: Khakis 22%, Yellows 19%, Purples 12%
+	800-899: Khakis 34%, Yellows 18%
+	900-1000: Khakis 51%
+	Conclusion: Purples -> Khakis
 
 
-Avg_education_importance (?)
-	0-99: Greens 66%, Reds 20%
-	100-199: Greens 70%, Reds 20%
-	200-299: Greens 71%, Reds 17%
-	300-399: Greens 74%, Reds 15%
-	400-499: Greens 80%, Reds 10%
-	500-599: Greens 94%
-	600-699: Greens 99%
-	700-799: Greens 99%
-	800-899: Greens 99%
-	900-1000: Greens 99%
-	Conclusion: higher means greens win (?)
+Avg_education_importance
+	0-99: Purples 19%, Whites 15%, Reds 15%, Greys 14%
+	100-199: Purples 24%, Reds 15%, Yellows 12%
+	200-299: Purples 28%, Reds 14%, Yellows 12%
+	300-399: Purples 31%, Yellows 12%, Reds 12%
+	400-499: Purples 34%, Yellows 11%
+	500-599: Purples 35%, Khakis 11%, Oranges 10%, Yellows 10%
+	600-699: Purples 35%, Khakis 12%, Oranges 11%
+	700-799: Purples 33%, Khakis 14%, Oranges 12%
+	800-899: Purples 29%, Khakis 16%, Oranges 12%
+	900-1000: Purples 23%, Khakis 19%, Oranges 13%
+	Conclusion: Purples -> Khakis
 
 
-Avg_monthly_expense_on_pets_or_plants (?)
-	0-99: Whites 50%, Greys 18%, Purples 18%
-	100-199: Whites 61%, Greys 17%, Purples 17%
-	200-299: Whites 52%, Purples 36%
-	300-399: Purples 86%, Whites 13%
-	400-499: Purples 97%
-	500-599: Purples 95%
-	600-699: Purples 92%
-	700-770:  Purples 90%
-	Conclusion: Whites (0-300), Purples (300-770)
+Avg_monthly_expense_on_pets_or_plants
+	0-99: Purples 37%, Khakis 10%, Yellows 10%
+	100-199: Purples 38%, Khakis 10%, Yellows 10%
+	200-299: Purples 38%, Khakis 11%, Yellows 10%
+	300-399: Purples 36%, Khakis 13%, Yellows 11%, Pinks 10%
+	400-499: Purples 29%, Khakis 17%, Yellows 13%
+	500-599: Khakis 23%, Purples 20%, Greens 15%
+	600-699: Khakis 29%, Greens 19%, Purples 16%
+	700-770: Khakis 32%, Greens 21%, Purples 16%
+	Conclusion: Purples -> Khakis, Greens
 	
 	
 Yearly_ExpensesK
@@ -60,7 +60,7 @@ Yearly_ExpensesK
 	7000-8000: Purples 45%, Khakis 13%
 	8000-9000: Purples 47%, Khakis 13%
 	9000-10000: Purples 45%, Khakis 16%
-	Conclusion: Browns - low, Purples -mid to high
+	Conclusion: Browns -> Purples
 	
 	
 Number_of_valued_Kneset_members
@@ -70,30 +70,30 @@ Number_of_valued_Kneset_members
 	9-11: Purples 43%
 	12-14: Purples 39%, Oranges 10%
 	15-17: Purples 29%, Greens 12%, Oranges 11%, Violets 11%
-	Conclusion: Whites - low, Purples - high
+	Conclusion: Whites -> Purples
 
 
 Weighted_education_rank (should be float)
-	14-100:
-	100-186:
-	186-272:
-	272-358:
-	358-444:
-	444-530:
-	530-616:
-	616-702:
-	702-788:
-	788-866:
-	Conclusion:
+	14-100: Purples 34%, Yellows 11%, Oranges 10%
+	100-186: Purples 37%, Yellows 12%
+	186-272: Purples 38%, Yellows 12%
+	272-358: Purples 38%, Yellows 12%
+	358-444: Purples 36%, Yellows 12%
+	444-530: Purples 33%, Yellows 12%, Oranges 11%
+	530-616: Purples 29%, Oranges 13%, Yellows 12%
+	616-702: Purples 25%, Oranges 17%, Yellows 11%
+	702-788: Oranges 22%, Purples 20%
+	788-866: Oranges 28%, Purples 15%, Khakis 13%
+	Conclusion: Purples -> Oranges
 	
 Avg_Residancy_Altitude (should be float)
-	0-2:
-	2-4:
-	4-6:
-	8-10:
-	10-12:
-	12-13:
-	Conclusion:
+	0-2: Purples 37%, Reds 13%
+	2-4: Purples 38%, Reds 12%
+	4-6: Purples 37%, Reds 11%
+	6-10: Purples 35%, Reds 10%
+	10-12: Purples 31%, Khakis 10%, Yellows 10%
+	12-13: Purples 26%, Khakis 11%
+	Conclusion: None
 
 	
 Most_Important_Issue

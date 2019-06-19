@@ -11,14 +11,21 @@ from sklearn.mixture import BayesianGaussianMixture
 from mpl_toolkits.mplot3d import Axes3D
 
 
-def create_cluster_coalitions(models: list, data: pd.DataFrame, threshold: float = 0.3):
+def create_cluster_coalitions(models: list, data: pd.DataFrame, labels: pd.Series, threshold: float = 0.3):
     coalitions = []
     for model in models:
         probs = model.predict_proba(data)
         probs[probs < threshold] = 0
         con_mat = probs @ probs.transpose()
         col = sk.cluster.AgglomerativeClustering(n_clusters=2, connectivity=con_mat).fit_predict(data)
-        coalitions.append(col)
+
+        col = pd.Series(col, index=labels.index)
+        col_number = col.value_counts().idxmax()
+        # parties = pd.Series()
+        col_parties = labels.unique()[
+            labels[col == col_number].value_counts().sort_index() >= labels.value_counts().sort_index() * 0.75]
+
+        coalitions.append(col_parties)
     return coalitions
 
 

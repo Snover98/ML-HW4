@@ -110,7 +110,7 @@ def create_gen_coalition(gen_model, features: pd.DataFrame, labels: pd.Series):
 
     coalition = get_coalition(labels, groups)
 
-    return labels.isin(coalition).astype(np.int)
+    return coalition
 
 
 def unite_parties(labels: pd.Series, js_matrice: np.ndarray, groups):
